@@ -11,7 +11,7 @@ export const responseGoogle = async (response, navigate) => {
   const decoded = jwt_decode(response.credential)
   
   const { name, picture, sub } = decoded
-  localStorage.setItem("profile", JSON.stringify(decoded))
+  localStorage.setItem("user", JSON.stringify(decoded))
   const user = {
     _id: sub,
     _type: 'user',
