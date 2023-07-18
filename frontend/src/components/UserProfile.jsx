@@ -7,6 +7,7 @@ import { userCreatedPinsQuery, userQuery, userSavedPinsQuery } from '../utils/da
 import { client } from '../client';
 import MasonryLayout from './MasonryLayout';
 import Spinner from './Spinner';
+import { fetchUser } from '../utils/fetchUser';
 
 const activeBtnStyles = 'bg-red-500 text-white font-bold p-2 rounded-full w-20 outline-none';
 const notActiveBtnStyles = 'bg-primary mr-4 text-black font-bold p-2 rounded-full w-20 outline-none';
@@ -19,7 +20,7 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
 
-  const User = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
+  const User = fetchUser()
 
   useEffect(() => {
     const query = userQuery(userId);
@@ -58,7 +59,7 @@ const UserProfile = () => {
         <div className="relative flex flex-col mb-7">
           <div className="flex flex-col justify-center items-center">
             <img
-              className=" w-full h-370 2xl:h-510 shadow-lg object-cover"
+              className=" w-full h-370 xl:h-420 shadow-lg object-cover"
               src="https://source.unsplash.com/1600x900/?nature,photography,technology"
               alt="user-pic"
             />

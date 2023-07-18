@@ -9,8 +9,19 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import "./App.css";
 import Login from "./components/Login";
 import Home from "./container/Home";
-console.log(process.env)
+import { fetchUser } from "./utils/fetchUser";
+import { useEffect } from "react";
+
 function App() {
+  const navigate = useNavigate()
+  const user = fetchUser()
+
+  useEffect(() => {
+    if(!user){
+      navigate('/login')
+    }
+  }, [])
+  
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
     <Router>
