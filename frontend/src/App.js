@@ -14,9 +14,9 @@ import { useEffect } from "react";
 
 function App() {
   const navigate = useNavigate()
-  const user = fetchUser()
-
+  
   useEffect(() => {
+    const user = fetchUser()
     if(!user){
       navigate('/login')
     }
@@ -24,12 +24,10 @@ function App() {
   
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-    <Router>
       <Routes>
         <Route path="login" element={<Login />} />
         <Route path="/*" element={<Home />} />
       </Routes>
-    </Router>
     </GoogleOAuthProvider>
   );
 }
