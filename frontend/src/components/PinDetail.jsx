@@ -13,7 +13,9 @@ const PinDetail = ({ user }) => {
   const [pins, setPins] = useState();
   const [pinDetail, setPinDetail] = useState();
   const [comment, setComment] = useState('');
+  const [comments, setComments] = useState([]);
   const [addingComment, setAddingComment] = useState(false);
+  console.log(user)
 
   const fetchPinDetails = () => {
     const query = pinDetailQuery(pinId);
@@ -21,6 +23,7 @@ const PinDetail = ({ user }) => {
     if (query) {
       client.fetch(`${query}`).then((data) => {
         setPinDetail(data[0]);
+        setComments(data[0].comments)
         console.log(data);
         if (data[0]) {
           const query1 = pinDetailMorePinQuery(data[0]);
@@ -45,8 +48,14 @@ const PinDetail = ({ user }) => {
         .setIfMissing({ comments: [] })
         .insert('after', 'comments[-1]', [{ comment, _key: uuidv4(), postedBy: { _type: 'postedBy', _ref: user._id } }])
         .commit()
-        .then(() => {
-          fetchPinDetails();
+        .then((response) => {
+          // fetchPinDetails();
+          setComments([...comments,{postedBy:{
+            image: user.image, 
+            userName:user.name
+            },
+            comment
+          }])
           setComment('');
           setAddingComment(false);
         });
@@ -98,8 +107,8 @@ const PinDetail = ({ user }) => {
               </Link>
               <h2 className="mt-5 text-2xl">Comments</h2>
               <div className="max-h-370 overflow-y-auto">
-                {pinDetail?.comments?.map((item) => (
-                  <div className="flex gap-2 mt-5 items-center bg-white rounded-lg" key={item.comment}>
+                {comments?.map((item, index) => (
+                  <div className="flex gap-2 mt-5 items-center bg-white rounded-lg" key={index}>
                     <img
                       src={item.postedBy?.image}
                       className="w-10 h-10 rounded-full cursor-pointer"
